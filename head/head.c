@@ -9,7 +9,7 @@ static int print_n_lines = 10;
 static int print_n_chars = 0;
 static int show_filenmae = 1;
 
-static void print_lines(FILE *fp, size_t n, int printlines, char *);
+static void print_lines(FILE *fp, ssize_t n, int printlines, char *);
 static void do_head(FILE *fp, char *thisf, char *nextf);
 
 int main(int argc, char **argv)
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 				show_filenmae = 0;
 				break;
 			case '?':
-				fprintf(stderr, "Usage: %s [-q] [-n [-]K] [-c [-]K]\n", argv[0]);
+				fprintf(stderr, "Usage: %s [-q] [-n K] [-c K]\n", argv[0]);
 				exit(1);
 			case ':':
 				fprintf(stderr, "%s need a parameter\n", optopt);
@@ -66,7 +66,7 @@ void do_head(FILE *fp, char *thisf, char *nextf)
 	if (show_filenmae != 0)
 		printf("==> %s <==\n", thisf);
 
-	if (print_n_chars != 0)
+	if (print_n_chars > 0)
 		print_lines(fp, print_n_chars, 0, thisf);
 	else
 		print_lines(fp, print_n_lines, 1, thisf);
@@ -75,7 +75,7 @@ void do_head(FILE *fp, char *thisf, char *nextf)
 		printf("\n");
 }
 
-void print_lines(FILE *fp, size_t n, int printlines, char *fname)
+void print_lines(FILE *fp, ssize_t n, int printlines, char *fname)
 {
 	int cnt;
 	int c;
