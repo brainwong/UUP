@@ -39,13 +39,17 @@ int main(int argc, char **argv)
 		}
 	}
 
-	for (i = optind; i < argc; i++) {
-		if ( (fp = fopen(argv[i], "r")) == NULL) {
-			fprintf(stderr, "open %s error: %s\n", argv[i], strerror(errno));
-			exit(1);
+	if (argv[optind] == NULL) {
+		do_cat(stdin);
+	} else {
+		for (i = optind; i < argc; i++) {
+			if ( (fp = fopen(argv[i], "r")) == NULL) {
+				fprintf(stderr, "open %s error: %s\n", argv[i], strerror(errno));
+				exit(1);
+			}
+			do_cat(fp);
+			fclose(fp);
 		}
-		do_cat(fp);
-		fclose(fp);
 	}
 
 	exit(0);
